@@ -145,6 +145,7 @@ const formatArticles = (articles, timezone, nocolor, reverse) => {
 const formatHelp = () => {
   const validArguments = []
   const validArgs = parser.VALID_ARGS
+  const baseUrl = process.env.BASE_URL
   Object.keys(validArgs).forEach(key => {
     validArguments.push(`    ${key.yellow}: ${validArgs[key].description}`)
   })
@@ -152,7 +153,7 @@ const formatHelp = () => {
     table.push([[
       '',
       // Query syntax
-      `Usage: curl ${'[country]'.cyan}.getnews.tech/` +
+      `Usage: curl ${baseUrl}/` +
         `${'[query,]'.green}${'arg'.yellow}=value,${'arg'.yellow}=value`,
       '\n',
       // Valid countries
@@ -168,13 +169,13 @@ const formatHelp = () => {
         `Valid categories: ${parser.VALID_CATEGORIES.join(', ')}`),
       '\n',
       // Example queries
-      'Example queries:',
-      '    curl getnews.tech/trump',
-      '    curl getnews.tech/mass+shooting,n=20',
-      '    curl at.getnews.tech/category=business,nocolor',
-      '    curl us.getnews.tech/category=general,page=2,reverse',
+      `Example queries:`,
+      `    curl ${baseUrl}/trump`,
+      `    curl ${baseUrl}/mass+shooting,n=20`,
+      `    curl ${baseUrl}/category=business,nocolor`,
+      `    curl ${baseUrl}/category=general,page=2,reverse`,
       '',
-      '    firefox getnews.tech/s/t8wAWZW0',
+      `    firefox ${baseUrl}/s/t8wAWZW0`,
       ''
     ].join('\n')])
   })
