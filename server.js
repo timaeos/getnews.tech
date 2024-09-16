@@ -114,7 +114,7 @@ app.get('/:query', asyncHandler(async(request, response, next) => {
     response.send(formatter.formatHelp())
     return
   }
-  console.log(args.country)
+  request.country = args.country
   const articles = await getArticles(
     args.country, args.category, args.query, args.n, args.p)
   response.send(formatter.formatArticles(
