@@ -16,7 +16,7 @@ if (NEWS_API_KEY === "") {
 }
 
 const REDIS_PREFIX = PROD ? 'prod' : 'dev'
-const URL_SHORTENER_BASE_URL = PROD ? 'getnews.tech' : 'dev.getnews.tech'
+const URL_SHORTENER_BASE_URL = process.env.BASE_URL
 
 // Dependencies.
 const asyncHandler = require('express-async-handler')
@@ -55,7 +55,6 @@ app.use(loggers.devLoggerMiddleware)
 
 app.use(asyncHandler(async(request, response, next) => {
   request.isCurl = (request.headers['user-agent'] || '').includes('curl')
-  request.country = parser.parseSubdomain(request.subdomains)
   try {
     const locationData = await iplocate(request.headers['x-forwarded-for'])
     // eslint-disable-next-line require-atomic-updates
@@ -101,7 +100,7 @@ app.get('/', asyncHandler(async(request, response, next) => {
     return
   }
   const articles = await getArticles(
-    request.country, 'general', null, null, null)
+    '', 'general', null, null, null)
   response.send(formatter.formatArticles(articles, request.timezone))
 }))
 
@@ -116,7 +115,7 @@ app.get('/:query', asyncHandler(async(request, response, next) => {
     return
   }
   const articles = await getArticles(
-    request.country, args.category, args.query, args.n, args.p)
+    args.country, args.category, args.query, args.n, args.p)
   response.send(formatter.formatArticles(
     articles, request.timezone, args.nocolor, args.reverse))
 }))

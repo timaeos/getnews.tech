@@ -60,6 +60,16 @@ const VALID_ARGS = {
       throw new RecoverableError(`"${value}" is not a valid ${arg}.`)
     }
   },
+  country: {
+    description: 'country to fetch',
+    parser: (arg, value) => {
+      const country = value
+      if (country === '' || !VALID_COUNTRIES.includes(country)) {
+        throw new RecoverableError(`${country} is not a valid ${arg}.`)
+      }
+      return value
+    }
+  },
   reverse: {
     description: 'display results in reverse chronological order',
     parser: (arg, value) => value !== 'false'
